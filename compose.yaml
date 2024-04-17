@@ -1,0 +1,23 @@
+services:
+ mmdetection:
+   build:
+     context: .
+     dockerfile: Dockerfile
+   deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+   ipc: host
+   ports:
+     - 8888:8888
+   volumes:
+     - ../data:/workspace/data # bind-mount the data storage folder
+     - ./config:/workspace/config
+     - ./inputs:/workspace/inputs
+     - ./model:/workspace/model
+     - ./notebooks:/workspace/notebooks
+     - ./outputs:/workspace/outputs
+   working_dir: /workspace
